@@ -7,7 +7,6 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject playerObject = null;
-    [SerializeField] private GameObject[] _panel = null;
     [SerializeField] private List<GameObject> fly = null;
     [SerializeField] private GameObject flyObject = null;
 
@@ -17,8 +16,9 @@ public class GameManager : MonoBehaviour
     private float _moveFactorX;
     private int length = 0;
 
+    [SerializeField] private float distance;
     [SerializeField] private float boundrey = 0;
-    
+
     private Rigidbody playerRigidbody;
     private PlayerColliderScript playerColliderScript;
     [SerializeField] private TextMeshPro flyText = null;
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         level = PlayerPrefs.GetInt("Level");
-        if (level > 3)
+        if (level > levels.Length)
         {
             level = 0;
         }
@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour
     {
         playerColliderScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerColliderScript>();
         playerObject = GameObject.FindGameObjectWithTag("Player");
-        _panel = GameObject.FindGameObjectsWithTag("Panel");
         playerRigidbody = playerObject.GetComponent<Rigidbody>();
         length = fly.Count;
         timer = Time.time;
@@ -50,11 +49,13 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+
         int count = fly.Count;
         Time.timeScale = 1f;
         flyText.text = count.ToString();
         if (fly.Count >= 1)
         {
+
             if (playerColliderScript.flyPlus)
             {
                 int q = int.Parse(playerColliderScript.value);
@@ -104,7 +105,6 @@ public class GameManager : MonoBehaviour
             {
                 Finish();
             }
-            PanelRotation();
             Speed();
             InputSystem();
             MoverSystem();
@@ -161,20 +161,10 @@ public class GameManager : MonoBehaviour
 
     public void FlyInstantiate()
     {
-        float instantianeX = Random.Range(playerObject.transform.position.x - 0.5f, playerObject.transform.position.x + 0.5f);
-        float instantianeY = Random.Range(playerObject.transform.position.y - 1.0f, playerObject.transform.position.y + 0.5f);
-        float instantianeZ = Random.Range(playerObject.transform.position.z - 0.01f, playerObject.transform.position.z - 2.0f);
-        Vector3 vector = new Vector3(instantianeX, instantianeY, instantianeZ);
-        fly.Add(Instantiate(flyObject, vector, playerObject.transform.rotation, playerObject.transform.GetChild(0)));
+        fly.Add(Instantiate(flyObject, playerObject.transform.position, playerObject.transform.rotation, playerObject.transform.GetChild(0)));
+        CircleSystem();
     }
 
-    private void PanelRotation()
-    {
-        for (int i = 0; i < _panel.Length; i++)
-        {
-            _panel[i].transform.Rotate(new Vector3(0, Time.deltaTime * 90, 0));
-        }
-    }
     private void Finish()
     {
         for (int i = 0; i < fly.Count; i++)
@@ -204,12 +194,31 @@ public class GameManager : MonoBehaviour
         levels[level].SetActive(true);
         SceneManager.LoadScene(0);
         Time.timeScale = 1f;
-        timer = Time.time ;
+        timer = Time.time;
     }
     public void TryAgain()
     {
         SceneManager.LoadScene(0);
         Time.timeScale = 1f;
 
+    }
+
+    private void CircleSystem()
+    {
+        float angle = 1f;
+        float flyCount = fly.Count;
+        angle = 360 / flyCount;
+        for (int i = 0; i < flyCount; i++)
+        {
+            MoveObject(fly[i].transform, i * angle);
+        }
+    }
+
+    private void MoveObject(Transform objectTransform, float degree)
+    {
+        Vector3 vec = Vector3.zero;
+        vec.x = Mathf.Cos(degree * Mathf.Deg2Rad);
+        vec.y = Mathf.Sin(degree * Mathf.Deg2Rad);
+        objectTransform.localPosition = vec * distance;
     }
 }
