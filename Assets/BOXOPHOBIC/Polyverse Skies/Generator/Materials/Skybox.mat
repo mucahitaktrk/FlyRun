@@ -96,11 +96,11 @@ Material:
     - _TwinklingSpeed: 0.05
     - _backgroundCat: 1
     m_Colors:
-    - _CloudsLightColor: {r: 0.8207547, g: 0.5149074, b: 0.70445466, a: 1}
-    - _CloudsShadowColor: {r: 0.8480053, g: 0.8382432, b: 0.8584906, a: 1}
-    - _EquatorColor: {r: 0.9622642, g: 0.9247262, b: 0.9123354, a: 1}
-    - _GroundColor: {r: 0.6123621, g: 0.9339623, b: 0.90192145, a: 1}
+    - _CloudsLightColor: {r: 1, g: 1, b: 1, a: 1}
+    - _CloudsShadowColor: {r: 0.94117653, g: 0.41960788, b: 0.854902, a: 1}
+    - _EquatorColor: {r: 1, g: 0.16509432, b: 0.8492103, a: 1}
+    - _GroundColor: {r: 0, g: 1, b: 0.9024391, a: 1}
     - _MoonColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SkyColor: {r: 0.7924528, g: 0.15325737, b: 0.22877237, a: 1}
+    - _SkyColor: {r: 1, g: 0.7122642, b: 0.9463544, a: 1}
     - _SunColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

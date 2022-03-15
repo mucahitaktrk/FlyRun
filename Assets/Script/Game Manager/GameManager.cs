@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        CircleSystemOne();
         int count = fly.Count;
         Time.timeScale = 1f;
         flyText.text = count.ToString();
@@ -156,13 +156,13 @@ public class GameManager : MonoBehaviour
 
     private void Speed()
     {
-        playerRigidbody.velocity = new Vector3(playerObject.transform.position.x, playerObject.transform.position.y, 17);
+        playerRigidbody.velocity = new Vector3(playerObject.transform.position.x, playerObject.transform.position.y, 0);
     }
 
     public void FlyInstantiate()
     {
         fly.Add(Instantiate(flyObject, playerObject.transform.position, playerObject.transform.rotation, playerObject.transform.GetChild(0)));
-        CircleSystem();
+
     }
 
     private void Finish()
@@ -203,15 +203,27 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void CircleSystem()
+    private void CircleSystemOne()
     {
         float angle = 1f;
         float flyCount = fly.Count;
         angle = 360 / flyCount;
-        for (int i = 0; i < flyCount; i++)
-        {
-            MoveObject(fly[i].transform, i * angle);
-        }
+            for (int i = 0; i < flyCount; i++)
+            {
+            if (i <= 9)
+            {
+                MoveObject(fly[i].transform, i * angle);
+            }
+            else if (i > 10 && i <= 20)
+            {
+                MoveObject(fly[i].transform, i * angle);
+            }
+            else if (i > 20 && i <= 30)
+            {
+                MoveObject(fly[i].transform, i * angle);
+            }
+            }
+        
     }
 
     private void MoveObject(Transform objectTransform, float degree)
